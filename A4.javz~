@@ -62,31 +62,18 @@ public class A4 {
 	  int[] Finish = new int[NUMBER_OF_CUSTOMERS];
 
 	  int safetyCount=0;
-	  int smallerCount=0;
+	  int workArrayCount=0;
 
 	  boolean finalSafetyCheck=true;
         while(safetyCount != NUMBER_OF_CUSTOMERS)
 	{
 	  for(int i=0; i<NUMBER_OF_CUSTOMERS; i++)
 	  {
-	    if(Work[0] <= need[i][0] && Finish[i] == 0)
+	    if(Work[workArrayCount] <= need[i][0] && Finish[i] == 0)
 		{		
 		  for(int j=0; j<NUMBER_OF_RESOURCES; j++)
 		  {
-		    if(Work[j] <= need[i][j])
-		    {
-		      smallerCount++;
-		    }
-		    else if(smallerCount==NUMBER_OF_RESOURCES)
-		    {
-		      for(int k=0; k<NUMBER_OF_RESOURCES; k++)
-		      {
-		        Work[k] += allocation[i][k];
-		      }
-		      smallerCount=0;
-		    }
-		    else
-		    smallerCount=0;
+		    Work[j] += allocation[i][j];
 		  }
 		  Finish[i] = 1;
 		  safetyCount = 0;		
@@ -95,8 +82,8 @@ public class A4 {
 		{
 		  safetyCount++;
 		}	
+	    workArrayCount++;
 	  }
-	}
 
 	for(int i=0; i<NUMBER_OF_RESOURCES; i++)
 	{
@@ -112,7 +99,7 @@ public class A4 {
 	
 	return finalSafetyCheck; 
     }
-/*
+
     public void fill_available() {
 	Scanner reader = new Scanner(System.in);
 	
@@ -121,63 +108,6 @@ public class A4 {
 	    available[i] = reader.nextInt();
 	}
 
-    }
-*/
-    public boolean resource_Request_Accepted(int index, int[] request)
-    {
-	boolean needSuccess=false;
-	boolean availableSuccess=false;
-	boolean finalSuccess;
-	
-	int count = 0;
-	int custNum = 0;
-
-	//for(int i=0; i <NUMBER_OF_CUSTOMERS; i++)
-	//{
-	  for(int j=0; j<NUMBER_OF_RESOURCES; j++)
-	  {
-	    if(request[j] <= need[index][j])
-	    {
-	      count++;
-	    }
-	    else if(count == NUMBER_OF_RESOURCES)
-	    {
-	      needSuccess = true;
-	      custNum = index;
-	    }
-	    else
-	      ;
-	  }
-//	count=0;
-//	}
-
-	for(int i=0; i<NUMBER_OF_RESOURCES; i++)
-	{
-	  if(request[i] <= available[i])
-	  {
-	    count++;  
-	  } 
-	  else if(count == NUMBER_OF_RESOURCES)
-	  {
-	    availableSuccess = true; 
-	  }
-	  else
-	  ;
-	}
-
-	if(needSuccess == true && availableSuccess == true)
-	{
-	  for(int i=0; i<NUMBER_OF_RESOURCES; i++)
-	  {
-	    available[i] = available[i] - request[i];
-	    allocation[custNum][i] = allocation[custNum][i] + request[i];
-	    need[custNum][i] = need[custNum][i] - request[i];
-	  }
-	  return true;
-	}
-	else
-	  ;
-	  return false;
     }
 
     public void print_ava() {
